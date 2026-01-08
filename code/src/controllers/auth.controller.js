@@ -92,7 +92,7 @@ export async function callback(req, res) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      },
+      }
     );
 
     if (!profileResponse.ok) {
@@ -110,7 +110,7 @@ export async function callback(req, res) {
     // Set cookie with token
     res.cookie("auth_token", token, {
       httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
+      secure: env.NODE_ENV === "production", // true in production with HTTPS
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
