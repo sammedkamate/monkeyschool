@@ -27,6 +27,10 @@ const __dirname = path.dirname(__filename);
 export function createApp() {
   const app = express();
 
+  // Trust proxy when behind Nginx/reverse proxy
+  // This enables Express to properly read X-Forwarded-* headers
+  app.set("trust proxy", 1);
+
   // Serve static files
   app.use(express.static(path.join(__dirname, "public")));
 
@@ -66,7 +70,7 @@ export function createApp() {
         },
       },
       crossOriginEmbedderPolicy: env.NODE_ENV === "production",
-    }),
+    })
   );
 
   // CORS configuration for HTMX requests
@@ -83,7 +87,7 @@ export function createApp() {
         "HX-Current-URL",
         "HX-Trigger",
       ],
-    }),
+    })
   );
 
   // Rate limiting
@@ -108,13 +112,13 @@ export function createApp() {
   app.use(
     express.json({
       limit: "10mb",
-    }),
+    })
   );
   app.use(
     express.urlencoded({
       extended: true,
       limit: "10mb",
-    }),
+    })
   );
 
   // Compression
